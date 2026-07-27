@@ -1,20 +1,18 @@
 import Snackbar from "@mui/material/Snackbar";
 import { Alert } from "@mui/material";
 
-let setOpenSuccessSnackbar = null;
-
-const handleCloseSuccess = (event, reason) => {
-    let prefixMessage = "SuccessSnackbar handleCloseSuccess";
-    console.log(` function ${prefixMessage} start `);
-    if (reason === "clickaway") {
-        return;
-    }
-    setOpenSuccessSnackbar(false);
-    console.log(` function ${prefixMessage}} end `);
-};
 
 export default function SuccessSnackbar({ open , setOpen , successMessage}) {
-    setOpenSuccessSnackbar = setOpen;
+
+    const handleCloseSuccess = (event, reason) => {
+        let prefixMessage = "SuccessSnackbar handleCloseSuccess";
+        console.log(` function ${prefixMessage} start `);
+        if (reason === "clickaway") {
+            return;
+        }
+        setOpen(false);
+        console.log(` function ${prefixMessage}} end `);
+    }
 
     return (
         <>
