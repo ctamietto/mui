@@ -48,6 +48,32 @@ export default class Remote {
     }
 
 
+    async testDB() {
+        let localPrefix = ` ${this.prefix} function testDB `;
+        loggerInstance.debug(`${localPrefix} start`);
+        let data = null;
+        try {
+            const urlRestServer = await configInstance.getRestServerUrl();
+            let url = `${urlRestServer}test/db`;
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`errore HTTP su chiamata remota test/db , Status: ${response.status}`);
+            }
+            data = await response.json();
+            this.checkResult(data);
+            this.checkData(data);
+
+        } catch (error) {
+            // Handle errors here
+            let errorMessage = `${localPrefix} : ${error}`
+            loggerInstance.error(errorMessage);
+            throw error;
+        }
+
+        loggerInstance.debug(`${localPrefix} end`);
+        return data;
+    }
+
     async ping() {
         let localPrefix = ` ${this.prefix} function ping `;
         loggerInstance.debug(`${localPrefix} start`);

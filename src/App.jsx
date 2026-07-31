@@ -11,8 +11,6 @@ import ErrorSnackbar from './components/Snackbars/ErrorSnackbar';
 import SuccessSnackbar from './components/Snackbars/SuccessSnackbar';
 import stateUIInstance from './ui/SingletonUIState';
 
-let data = await stateInstance.ping();
-
 function App() {
   // gestione della visualizzazione del drawer 
   const [openDrawer, setOpenDrawer] = React.useState(false);
@@ -29,6 +27,10 @@ function App() {
 
   async function onExecPing() {
     stateUIInstance.ping(setLoading, setOpenSuccess, setOpenError);
+  }
+
+  async function onExecTestDB() {
+    stateUIInstance.testDB(setLoading, setOpenSuccess, setOpenError);
   }
 
   return (
@@ -52,6 +54,7 @@ function App() {
         openDrawer={openDrawer}
         toggleDrawer={toggleDrawer}
         onExecPing={onExecPing}
+        onExecTestDB={onExecTestDB}
       />
       <BlockingLoader loading={loading} />
       <ErrorSnackbar open={openError}

@@ -18,15 +18,52 @@ class SingletonUIState {
 
     async delay(ms) { await new Promise((resolve) => setTimeout(resolve, ms)) };
 
+
+    async testDB(setLoading,setOpenSuccess,setOpenError) {
+        let localPrefix = ` ${this.prefix} function testDB `;
+        loggerInstance.debug(`${localPrefix} start`);
+        let data = null;
+        try {
+            // nascondi eventuali messaggi ancora visualizzati
+            setOpenSuccess(false);
+            setOpenError(false);
+            // visualizza loader indicante esecuzione procedura in corso
+            setLoading(true);
+            data = await stateInstance.testDB();
+            await this.delay(500);
+            loggerInstance.debug(`${localPrefix} testDBResult : ${JSON.stringify(data)}`);
+            let message = `testDB eseguito con successo , result = ${JSON.stringify(data.data)}`;
+            this.setGlobalVariables("successMessage", message);
+            // visualizza messaggio di successo
+            setOpenSuccess(true);
+
+        } catch (error) {
+            // Handle errors here
+            let errorMessage = `${localPrefix} : ${error}`
+            loggerInstance.error(errorMessage);
+            this.setGlobalVariables("errorMessage", errorMessage);
+            // visualizza messaggio di errore
+            setOpenError(true);
+        } finally {
+            setLoading(false);
+        }
+
+        loggerInstance.debug(`${localPrefix} end`);
+        return data;
+    }
+
     async ping(setLoading,setOpenSuccess,setOpenError) {
         let localPrefix = ` ${this.prefix} function ping `;
         loggerInstance.debug(`${localPrefix} start`);
         let data = null;
         try {
+            // nascondi eventuali messaggi ancora visualizzati
+            setOpenSuccess(false);
+            setOpenError(false);
             // visualizza loader indicante esecuzione procedura in corso
             setLoading(true);
             data = await stateInstance.ping();
-            await this.delay(1000);
+            await this.delay(500);
             loggerInstance.debug(`${localPrefix} pingResult : ${JSON.stringify(data)}`);
             this.setGlobalVariables("successMessage", "ping eseguito con successo");
             // visualizza messaggio di successo
