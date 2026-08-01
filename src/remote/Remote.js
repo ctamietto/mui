@@ -53,7 +53,7 @@ export default class Remote {
         loggerInstance.debug(`${localPrefix} start`);
         let data = null;
         try {
-            const urlRestServer = await configInstance.getRestServerUrl();
+            const urlRestServer = configInstance.getRestServerUrl();
             let url = `${urlRestServer}test/db`;
             const response = await fetch(url);
             if (!response.ok) {
@@ -80,7 +80,7 @@ export default class Remote {
         let data = null;
 
         try {
-            const urlRestServer = await configInstance.getRestServerUrl();
+            const urlRestServer = configInstance.getRestServerUrl();
             //await new Promise(resolve => setTimeout(resolve, 1000));
             let url = `${urlRestServer}ping`;
             const response = await fetch(url);
@@ -96,6 +96,41 @@ export default class Remote {
             throw error;
         }
 
+        loggerInstance.debug(`${localPrefix} end`);
+        return data;
+    }
+
+    async getList(params) {
+        let localPrefix = ` ${this.prefix} function getList `;
+        loggerInstance.debug(`${localPrefix} start , params : ${JSON.stringify(params)}`);
+        let data = null;
+        try {
+            const urlRestServer = await configInstance.getRestServerUrl();
+            let url = `${urlRestServer}bo/generic/list`;
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify(params)
+            });
+            const responseData = await response.json();
+            this.checkResult(responseData);
+            this.checkData(responseData);
+            data = responseData.data;
+            if (!("list" in data) || data.list == undefined || data.list == null) {
+                throw new Error(`property list not set in the response`);
+            }
+            if (!("count" in data) || data.count == undefined || data.count == null) {
+                throw new Error(`property list not set in the response`);
+            }
+        } catch (error) {
+            // Handle errors here
+            let errorMessage = `${localPrefix} : ${error}`
+            loggerInstance.error(errorMessage);
+            throw error;
+        }
         loggerInstance.debug(`${localPrefix} end`);
         return data;
     }

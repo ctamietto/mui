@@ -3,7 +3,10 @@ import ReactDOM from 'react-dom/client'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import App from './App.jsx'
+import stateUIInstance from './ui/SingletonUIState.js'
 
+
+stateUIInstance.setGlobalVariables("applicationInitialized",false);
 const theme = createTheme()
 
 ReactDOM.createRoot(document.getElementById('root')).render(

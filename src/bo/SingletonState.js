@@ -44,11 +44,27 @@ class SingletonState {
             loggerInstance.error(errorMessage);
             throw error;
         }
-
         loggerInstance.debug(`${localPrefix} end`);
         return data;
     }
 
+
+    async getList(params) {
+        let localPrefix = ` ${this.prefix} function getList `;
+        loggerInstance.debug(`${localPrefix} start , params : ${JSON.stringify(params)}`);
+        let data = null;
+        try {
+            const remote = new Remote();
+            data = await remote.getList(params);
+        } catch (error) {
+            // Handle errors here
+            let errorMessage = `${localPrefix} : ${error}`
+            loggerInstance.error(errorMessage);
+            throw error;
+        }
+        loggerInstance.debug(`${localPrefix} end`);
+        return data;
+    }
 
 }
 

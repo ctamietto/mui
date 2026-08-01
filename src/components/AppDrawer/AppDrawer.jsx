@@ -9,14 +9,37 @@ import NetworkPingIcon from '@mui/icons-material/NetworkPing';
 import DatabaseIcon from '@mui/icons-material/Storage';
 import { Drawer } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import MapsHomeWorkIcon from '@mui/icons-material/MapsHomeWork'
+import LocationCityIcon from '@mui/icons-material/LocationCity';
+import FlagIcon from '@mui/icons-material/Flag';
+import MapIcon from '@mui/icons-material/Map';
+import InboxIcon from '@mui/icons-material/Inbox';
+import configInstance from "../../utils/Config";
+import Divider from '@mui/material/Divider';
 
 
-
-export default function AppDrawer({ openDrawer, toggleDrawer,onExecPing,onExecTestDB }) {
+export default function AppDrawer({ openDrawer, toggleDrawer, onExecPing, onExecTestDB, setCurSection }) {
     const theme = useTheme();
     const labelPing = "Esegui Ping Server";
     const labelTestDB = "Esegui Test DB";
     const localPrefix = "Component AppDrawer";
+    const mainMenu = configInstance.getMainMenu();
+
+    const getMenuIcon = (iconLabel) => {
+        const iconSx = (theme) => ({ color: theme.palette.primary.main });
+        switch (iconLabel) {
+            case 'FlagIcon':
+                return <FlagIcon  sx={iconSx} />;
+            case 'MapIcon':
+                return <MapIcon  sx={iconSx}  />;
+            case 'MapsHomeWorkIcon':
+                return <MapsHomeWorkIcon  sx={iconSx}  />;
+            case 'LocationCityIcon':
+                return <LocationCityIcon  sx={iconSx}  />;
+            default:
+                return <InboxIcon />;
+        }
+    }
 
     const handleActionPing = () => {
         //loggerInstance.debug(`${localPrefix} handleActionPing`);
@@ -26,6 +49,10 @@ export default function AppDrawer({ openDrawer, toggleDrawer,onExecPing,onExecTe
     const handleActionTestDB = () => {
         onExecTestDB();
     }
+
+    const handleMainMenuClick = (code) => {
+        setCurSection(code);
+    };
 
     const DrawerList = (
         <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
@@ -46,6 +73,19 @@ export default function AppDrawer({ openDrawer, toggleDrawer,onExecPing,onExecTe
                         <ListItemText primary={labelTestDB} sx={{ color: theme.palette.primary.main }} />
                     </ListItemButton>
                 </ListItem>
+            </List>
+            <Divider />
+            <List>
+                {mainMenu.map((item, index) => (
+                    <ListItem key={item.label} disablePadding>
+                        <ListItemButton onClick={() => handleMainMenuClick(item.actionCode)} >
+                            <ListItemIcon>
+                                {getMenuIcon(item.icon)}
+                            </ListItemIcon>
+                            <ListItemText primary={item.label}  sx={{ color: theme.palette.primary.main }} />
+                        </ListItemButton>
+                    </ListItem>
+                ))}
             </List>
         </Box>
     );

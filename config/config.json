@@ -1,5 +1,29 @@
 {
     "restServer": {
         "url": "http://nodejs-comuni:3000/api/v1/"
+    },
+    "ui": {
+        "mainMenu": [
+            {
+                "label": "Nazioni",
+                "icon": "FlagIcon",
+                "actionCode": "NAZIONI"
+            },
+            {
+                "label": "Regioni",
+                "icon": "MapIcon",
+                "actionCode": "REGIONI"
+            },
+            {
+                "label": "Provincie",
+                "icon": "MapsHomeWorkIcon",
+                "actionCode": "PROVINCIE"
+            },
+            {
+                "label": "Comuni",
+                "icon": "LocationCityIcon",
+                "actionCode": "COMUNI"
+            }
+        ]
     }
 }

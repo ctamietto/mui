@@ -1,5 +1,6 @@
 import loggerInstance from "../utils/Logger.js";
 import stateInstance from "../bo/SingletonState.js"
+import configInstance from "../utils/Config.js";
 
 class SingletonUIState {
     prefix = "class SingletonUIState";
@@ -18,6 +19,21 @@ class SingletonUIState {
 
     async delay(ms) { await new Promise((resolve) => setTimeout(resolve, ms)) };
 
+    async initializeApplication() {
+        let localPrefix = ` ${this.prefix} function initializeApplication `;
+        loggerInstance.debug(`${localPrefix} start`);
+        try {
+            await configInstance.readConfig();
+            //await this.delay(1000);
+        } catch (error) {
+            // Handle errors here
+            let errorMessage = `${localPrefix} : ${error}`
+            loggerInstance.error(errorMessage);
+        } finally {
+        }
+
+        loggerInstance.debug(`${localPrefix} end`);
+    }
 
     async testDB(setLoading,setOpenSuccess,setOpenError) {
         let localPrefix = ` ${this.prefix} function testDB `;
@@ -79,6 +95,32 @@ class SingletonUIState {
             setLoading(false);
         }
 
+        loggerInstance.debug(`${localPrefix} end`);
+        return data;
+    }
+
+    async getList(setLoading,setOpenSuccess,setOpenError,params) {
+        let localPrefix = ` ${this.prefix} function getList `;
+        loggerInstance.debug(`${localPrefix} start , params : ${JSON.stringify(params)}`);
+        let data = null;
+        try {
+            // nascondi eventuali messaggi ancora visualizzati
+            setOpenSuccess(false);
+            setOpenError(false);
+            // visualizza loader indicante esecuzione procedura in corso
+            setLoading(true);
+            await this.delay(500);
+            data = await stateInstance.getList(params);
+        } catch (error) {
+            // Handle errors here
+            let errorMessage = `${localPrefix} : ${error}`
+            loggerInstance.error(errorMessage);
+            this.setGlobalVariables("errorMessage", errorMessage);
+            // visualizza messaggio di errore
+            setOpenError(true);
+        } finally {
+            setLoading(false);
+        }
         loggerInstance.debug(`${localPrefix} end`);
         return data;
     }
