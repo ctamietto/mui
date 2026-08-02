@@ -1,8 +1,9 @@
 import * as React from 'react';
 import stateUIInstance from '../../ui/SingletonUIState';
 import loggerInstance from '../../utils/Logger';
-import { Paper, Box } from '@mui/material';
+import { Paper, Box, Typography, InputLabel, TextField } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
+import { useTheme } from '@mui/material/styles';
 
 export default function NazioniSection({ setLoading, setOpenSuccess, setOpenError }) {
     const prefix = "Component App";
@@ -127,11 +128,45 @@ export default function NazioniSection({ setLoading, setOpenSuccess, setOpenErro
         fetchData();
     }, [page, pageSize, sortField, sortOrder]);
 
+
+    function renderSearchBar() {
+        const theme = useTheme();
+        // Accessing the primary main color
+        const primaryColor = theme.palette.primary.main;
+
+        return (
+            <Paper elevation={3} sx={{ padding: 1, width: '99.3%', margin: 1 }}>
+                <Typography variant="h6" component="h2"
+                    sx={{ fontWeight: "bold", marginTop: 0, marginBottom: 0, fontStyle: 'italic', color: primaryColor }}>
+                    Nazioni
+                </Typography>
+                <Box
+                    sx={{
+                        padding: 0.5,
+                        height: '100%',
+                        display: 'flex',
+                        justifyContent: 'start',  // horizontally
+                        alignItems: 'center'       // vertically
+                    }}
+                >
+                    <InputLabel id="company-select-label" sx={{ fontWeight: "bold", marginRight: 2, color: primaryColor }} >Denominazione</InputLabel>
+                    <TextField id="denominazione_nazione" label="" variant="outlined" size="small" color="primary" />
+                </ Box>
+            </Paper>
+        );
+    }
+
+    function renderNations() {
+
+        return (<Box sx={{ height: "80vh", width: '100%' }}>
+            {renderSearchBar()}
+            {renderDataGrid()}
+        </Box>)
+    }
+
     return (
         <div style={{ width: '100%' }}>
-            <Box sx={{ height: "90vh", width: '100%' }}>
-                {renderDataGrid()}
-            </Box>
+            {renderNations()}
         </div>
     );
 }
