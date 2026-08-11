@@ -25,11 +25,11 @@ export default function SearchableDataGrid({ filters, setFilters ,setLoading, se
             renderHeader: (params) => <strong>{params.colDef.headerName}</strong>
         },
         {
-            field: 'denominazione_nazione', headerName: 'Denominazione', width: 300,
+            field: 'denominazione_nazione', headerName: 'Denominazione', width: 400,
             renderHeader: (params) => <strong>{params.colDef.headerName}</strong>
         },
         {
-            field: 'denominazione_cittadinanza', headerName: 'Cittadinanza', width: 300,
+            field: 'denominazione_cittadinanza', headerName: 'Cittadinanza', width: 400,
             renderHeader: (params) => <strong>{params.colDef.headerName}</strong>
         }
     ];
